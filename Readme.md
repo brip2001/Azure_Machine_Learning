@@ -1,37 +1,29 @@
-# Udacity Machine Learning Project - Optimizing a Pipeline in Azure
+Optimizing an ML Pipeline in Azure
+Overview
+This project is part of the Udacity Azure ML Nanodegree. In this project, we build and optimize an Azure ML pipeline using the Python SDK and a provided Scikit-learn model. This model is then compared to an Azure AutoML run.
 
-## Project Overview
-This project focuses on optimizing a machine learning pipeline using **Azure Machine Learning**. The primary goal is to implement hyperparameter tuning for a Logistic Regression model and explore the capabilities of **AutoML** for comparison.
+Useful Resources
+ScriptRunConfig Class
+Configure and submit training runs
+HyperDriveConfig Class
+How to tune hyperparameters
+Summary
+This dataset contains data about bank marketing campaigns and client interactions. We seek to predict whether a client will subscribe to a term deposit based on various attributes.
 
-## Dataset
-The dataset used in this project is the **Bank Marketing Dataset**, available publicly. It contains information about customer interactions and whether or not they subscribed to a term deposit.
+The best performing model was a Logistic Regression model optimized using HyperDrive, achieving an accuracy of approximately 91%. The AutoML run produced a Voting Ensemble model with a slightly higher accuracy.
 
-- **Source**: UCI Machine Learning Repository
-- **Size**: 41,188 records
-- **Features**: 21 attributes (such as age, job, marital status, education, etc.)
+Scikit-learn Pipeline
+The pipeline uses the bank marketing dataset, which is cleaned and preprocessed to handle categorical variables and missing data. The classification algorithm used is Logistic Regression. Hyperparameter tuning is performed using Azure HyperDrive, varying the regularization strength C and max_iter to find the optimal model.
 
-## Architecture and Methodology
-The solution consists of the following key steps:
+Benefits of the parameter sampler chosen: A RandomParameterSampling strategy was chosen because it efficiently explores the hyperparameter space without exhaustively searching all possibilities. It allows for a good balance between exploration and computational efficiency.
 
-1. **Data Preprocessing**: The dataset is cleaned, and categorical columns are one-hot encoded for use in a machine learning model.
-   
-2. **Training Logistic Regression Model**: Hyperparameters like regularization strength (`C`) and maximum iterations (`max_iter`) were tuned using Azure's HyperDrive service.
-   
-3. **AutoML for Comparison**: Azure's AutoML service was used to compare multiple models and automatically select the best one based on accuracy.
+Benefits of the early stopping policy chosen: A BanditPolicy was used as the early stopping policy, which terminates underperforming runs early based on their performance relative to the best run. This saves computational resources and speeds up the hyperparameter tuning process by focusing on promising configurations.
 
-## Files in the Project
-- **train.py**: The training script for the Logistic Regression model.
-- **udacity-project.ipynb**: Jupyter notebook with HyperDrive and AutoML runs.
-- **README.md**: Documentation.
+AutoML
+AutoML experimented with various algorithms and hyperparameters and selected a Voting Ensemble model as the best performing model. This ensemble combines multiple models to improve predictive performance and achieved an accuracy slightly higher than the HyperDrive-tuned model.
 
-## Results
-- The best-performing Logistic Regression model had an accuracy of X%.
-- AutoML selected the Y algorithm, which achieved an accuracy of Z%.
+Pipeline comparison
+The AutoML model slightly outperformed the HyperDrive-tuned Logistic Regression model in terms of accuracy. While the Logistic Regression model is simpler, the AutoML's Voting Ensemble captures more complex patterns in the data. The difference in performance suggests that ensemble methods can provide better generalization by combining the strengths of multiple models.
 
-## Setup Instructions
-1. Clone the repository to your local machine.
-2. Run `train.py` on Azure Machine Learning Studio or a local environment with access to the dataset.
-3. Configure a compute cluster using Standard_D2_V2 for training.
-
-## Conclusion
-Azure Machine Learning provides a scalable and easy-to-use platform for deploying machine learning pipelines, offering tools like HyperDrive and AutoML for efficient experimentation and model optimization.
+Future work
+Future improvements could include experimenting with additional algorithms or ensemble methods in the HyperDrive run. Incorporating feature engineering techniques, such as creating interaction terms or using dimensionality reduction, might also enhance model performance. Additionally, tuning more hyperparameters or using a different sampling strategy could yield better results.
